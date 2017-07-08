@@ -3,6 +3,7 @@ const mkdirp = require('mkdirp')
 const program = require('commander');
 const fs = require('async-file')
 const path = require('path')
+onst userAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36`
 program
 	.version('0.1.0')
 	.option('-p, --puer', 'puerMode')
@@ -35,6 +36,7 @@ node fetchChapter.js -u http://www.qu.la/book/5443/3179374.html -f -p
 	const instance = await phantom.create()
 		//创建页面容器
 	const page = await instance.createPage()
+	page.setting("userAgent", userAgent)
 	const status = await page.open(URL),
 		code = 1;
 	if (status !== 'success') {
@@ -42,7 +44,7 @@ node fetchChapter.js -u http://www.qu.la/book/5443/3179374.html -f -p
 		return;
 	} else {
 		// await page.includeJs("https://cdn.bootcss.com/jquery/1.12.4/jquery.js")
-		await page.render('germy.png');
+		// await page.render('germy.png');
 		var start = Date.now();
 		var result = await page.evaluate(function() {
 			//移除一些无关内容
