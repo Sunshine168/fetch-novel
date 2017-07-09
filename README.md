@@ -3,7 +3,7 @@
  
 ## 爬虫内容
  爬笔趣阁上的小说,输出为本地文本。(仅做学习研究所用)
- [详细教程](./note)
+ [详细教程](https://github.com/Sunshine168/fetch-novel/blob/master/note.md)
  [简书](http://www.jianshu.com/p/d026345eb9b4)
     
 ## 用法
