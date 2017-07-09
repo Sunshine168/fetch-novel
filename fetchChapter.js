@@ -3,7 +3,15 @@ const mkdirp = require('mkdirp')
 const program = require('commander');
 const fs = require('async-file')
 const path = require('path')
-onst userAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36`
+	//设置用户代理
+const userAgent = `Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36`
+	/*
+	命令行参数
+	p -替换原文本中的换行空格
+	f -保存为文件
+	t 自定义输出路径
+    u 抓取单章的url
+	*/
 program
 	.version('0.1.0')
 	.option('-p, --puer', 'puerMode')
@@ -18,6 +26,9 @@ if (!program.url) {
 const URL = program.url;
 const DEFAULT_PATH = '/book/default/';
 
+/*
+替换br和&nbsp标签
+*/
 function puer(str) {
 	if (!str) {
 		return
@@ -47,7 +58,8 @@ node fetchChapter.js -u http://www.qu.la/book/5443/3179374.html -f -p
 		// await page.render('germy.png');
 		var start = Date.now();
 		var result = await page.evaluate(function() {
-			//移除一些无关内容
+			//移除一些无关内容(等于直接在结果网页上的dom上进行操作)
+			//请注意这里如果调用console.log()是无效的!
 			$("#content a:last-child").remove()
 			$("#content script:last-child").remove()
 			$("#content div:last-child").remove()
@@ -76,11 +88,13 @@ node fetchChapter.js -u http://www.qu.la/book/5443/3179374.html -f -p
 					//自定义路径
 				} else {
 					path = DEFAULT_PATH;
+					//避免文件夹不存在,__dirname指向的是文件所在路径
 					mkdirp(__dirname + path, (err) => {
 						if (err) {
 							console.log(err);
 						}
 					});
+					//拼接出文件输出的路径
 					path += result.title + ".txt";
 					await fs.writeFile(__dirname + path, context)
 						// return;
